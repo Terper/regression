@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,16 +21,29 @@ public class MainActivity extends AppCompatActivity {
 
     // Deklarera övriga variabler och objekt du behöver, t.ex. TextViews osv.
 
+    TextView txtShoesize, txtCorrelation;
+    EditText etxHeight;
+    Button btnCalculate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Här kommer som vanligt alla findViewById som behövs
+        txtShoesize = findViewById(R.id.txtShoesize);
+        txtCorrelation = findViewById(R.id.txtCorrelation);
+        etxHeight = findViewById(R.id.etxHeight);
+        btnCalculate = findViewById(R.id.btnCalculate);
+
+        btnCalculate.setOnClickListener(this::getEstimate);
     }
 
     // Gör så att den här metoden anropas vid ett knapptryck
     public void getEstimate(View view) {
+        int height = Integer.parseInt(etxHeight.getText().toString());
+
+        // placeholder
+        double correlationCoefficient = 0.6;
 
         // RegressionLine beräknar regressionslinjen på basen av våra datamängder
         // RegressionLine är alltså en klass som vi själva definierat (och som bör vidareutvecklas!)
@@ -41,6 +57,29 @@ public class MainActivity extends AppCompatActivity {
         // Anropa regLine.getX()-metoden via objektet regLine, och använd yValue som parameter
         // Skicka svaret till en TextView i layouten!
 
+
+
+
+        // placeholder
+        double shoesize = (double) height / 2;
+
+        String gradeOutput;
+        if (correlationCoefficient >= 0.99) {
+            gradeOutput = "perfekt";
+        } else if (correlationCoefficient >= 0.8) {
+            gradeOutput = "hög";
+        } else if (correlationCoefficient >= 0.5) {
+            gradeOutput = "måttlig";
+        } else if (correlationCoefficient >= 0.3) {
+            gradeOutput = "låg";
+        } else {
+            gradeOutput = "ingen";
+        }
+
+        double correlationCoefficientOutput = correlationCoefficient;
+
+        txtShoesize.setText(String.format("Skostorlek: %.2f", shoesize / 2));
+        txtCorrelation.setText(String.format("Korrelationsefficient: %.2f (%s)", correlationCoefficientOutput, gradeOutput));
 
     }
 
