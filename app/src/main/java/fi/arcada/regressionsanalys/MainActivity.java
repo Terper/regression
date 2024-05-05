@@ -38,48 +38,16 @@ public class MainActivity extends AppCompatActivity {
         btnCalculate.setOnClickListener(this::getEstimate);
     }
 
-    // Gör så att den här metoden anropas vid ett knapptryck
     public void getEstimate(View view) {
-        int height = Integer.parseInt(etxHeight.getText().toString());
+        yValue = Double.parseDouble(etxHeight.getText().toString());
 
-        // placeholder
-        double correlationCoefficient = 0.6;
+        RegressionLine regressionLine = new RegressionLine(xData, yData);
+        double correlationCoefficient = regressionLine.getCorrelationCoefficient();
+        double shoesize = regressionLine.getX(yValue);
+        String correlationGrade = regressionLine.getCorrelationGrade();
 
-        // RegressionLine beräknar regressionslinjen på basen av våra datamängder
-        // RegressionLine är alltså en klass som vi själva definierat (och som bör vidareutvecklas!)
-        // Instansiera regressionLine t.ex. så här:
-        //RegressionLine regLine = new RegressionLine(xData, yData);
-
-        // Ta emot användarens input (längd) och spara i yValue
-        // Använd ett try/catch-block för NumberFormatException så att appen inte crashar
-        // om man skriver någonting annat än siffror
-
-        // Anropa regLine.getX()-metoden via objektet regLine, och använd yValue som parameter
-        // Skicka svaret till en TextView i layouten!
-
-
-
-
-        // placeholder
-        double shoesize = (double) height / 2;
-
-        String gradeOutput;
-        if (correlationCoefficient >= 0.99) {
-            gradeOutput = "perfekt";
-        } else if (correlationCoefficient >= 0.8) {
-            gradeOutput = "hög";
-        } else if (correlationCoefficient >= 0.5) {
-            gradeOutput = "måttlig";
-        } else if (correlationCoefficient >= 0.3) {
-            gradeOutput = "låg";
-        } else {
-            gradeOutput = "ingen";
-        }
-
-        double correlationCoefficientOutput = correlationCoefficient;
-
-        txtShoesize.setText(String.format("Skostorlek: %.2f", shoesize / 2));
-        txtCorrelation.setText(String.format("Korrelationsefficient: %.2f (%s)", correlationCoefficientOutput, gradeOutput));
+        txtShoesize.setText(String.format("Skostorlek: %.2f", shoesize));
+        txtCorrelation.setText(String.format("Korrelationsefficient: %.2f (%s)", correlationCoefficient, correlationGrade));
 
     }
 
